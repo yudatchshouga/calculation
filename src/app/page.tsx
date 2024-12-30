@@ -1,14 +1,35 @@
 'use client';
 
-enum Operator {
-  ADD = '+',
-  SUBTRACT = '–',
-  MULTIPLY = '×',
-  DIVIDE = '÷',
-  EQUAL = '=',
-}
+import { useEffect, useState } from 'react';
+import { onClickButton, Operator } from './function';
 
 export default function Home() {
+  const [previousValue, setPreviousValue] = useState<string>('0');
+  const [currentValue, setCurrentValue] = useState<string>('0');
+  const [operator, setOperator] = useState<Operator>(Operator.NONE);
+
+  useEffect(() => {
+    console.log(
+      'previous:',
+      previousValue,
+      'operator:',
+      operator,
+      'current:',
+      currentValue
+    );
+  }, []);
+
+  useEffect(() => {
+    console.log(
+      'previous:',
+      previousValue,
+      'operator:',
+      operator,
+      'current:',
+      currentValue
+    );
+  }, [previousValue, currentValue, operator]);
+
   return (
     <div
       style={{
@@ -30,7 +51,7 @@ export default function Home() {
           fontSize: '24px',
         }}
       >
-        0
+        {currentValue}
       </div>
       <div
         style={{
@@ -141,6 +162,17 @@ export default function Home() {
 
   function onClickNumber(value: number) {
     console.log(value);
+    const result = onClickButton(
+      {
+        currentValue,
+        previousValue,
+        operator,
+      },
+      value.toString()
+    );
+    setCurrentValue(result.currentValue);
+    setPreviousValue(result.previousValue);
+    setOperator(result.operator);
   }
 }
 
