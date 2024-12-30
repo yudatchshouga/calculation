@@ -1,39 +1,35 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { onClickButton, Operator } from './function';
 
 export default function Home() {
-  const [previousValue, setPreviousValue] = useState<string>('0');
-  const [currentValue, setCurrentValue] = useState<string>('0');
-  const [operator, setOperator] = useState<Operator>(Operator.NONE);
-  const [isNewInput, setIsNewInput] = useState<boolean>(true);
+  const [memory, setMemory] = useState<string[]>(['0']);
+  const [displayValue, setDisplayValue] = useState<string>('0');
+  const [isFinished, setIsFinished] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(
-      'previous:',
-      previousValue,
-      'operator:',
-      operator,
-      'current:',
-      currentValue,
-      'isNewInput:',
-      isNewInput
-    );
+    console.log('memory:', memory);
   }, []);
 
   useEffect(() => {
-    console.log(
-      'previous:',
-      previousValue,
-      'operator:',
-      operator,
-      'current:',
-      currentValue,
-      'isNewInput:',
-      isNewInput
-    );
-  }, [previousValue, currentValue, operator, isNewInput]);
+    console.log('memory:', memory);
+    const last = memory[memory.length - 1];
+    if (
+      last === Operator.ADD ||
+      last === Operator.SUBTRACT ||
+      last === Operator.MULTIPLY ||
+      last === Operator.DIVIDE
+    ) {
+      setDisplayValue(memory[memory.length - 2]);
+    } else {
+      setDisplayValue(last);
+    }
+  }, [memory]);
+
+  useEffect(() => {
+    console.log('isFinished:', isFinished);
+  }, [isFinished]);
 
   return (
     <div
@@ -56,7 +52,7 @@ export default function Home() {
           fontSize: '24px',
         }}
       >
-        {currentValue}
+        {displayValue}
       </div>
       <div
         style={{
@@ -88,7 +84,7 @@ export default function Home() {
         <OperatorButton
           value={Operator.DIVIDE}
           onClick={(value) => {
-            console.log(value);
+            onClickOperator(value);
           }}
         />
         <NumberButton
@@ -112,19 +108,7 @@ export default function Home() {
         <OperatorButton
           value={Operator.MULTIPLY}
           onClick={(value) => {
-            const result = onClickButton(
-              {
-                currentValue,
-                previousValue,
-                operator,
-                isNewInput,
-              },
-              value
-            );
-            setCurrentValue(result.currentValue);
-            setPreviousValue(result.previousValue);
-            setOperator(result.operator);
-            setIsNewInput(result.isNewInput);
+            onClickOperator(value);
           }}
         />
         <NumberButton
@@ -148,19 +132,7 @@ export default function Home() {
         <OperatorButton
           value={Operator.SUBTRACT}
           onClick={(value) => {
-            const result = onClickButton(
-              {
-                currentValue,
-                previousValue,
-                operator,
-                isNewInput,
-              },
-              value
-            );
-            setCurrentValue(result.currentValue);
-            setPreviousValue(result.previousValue);
-            setOperator(result.operator);
-            setIsNewInput(result.isNewInput);
+            onClickOperator(value);
           }}
         />
         <NumberButton
@@ -171,75 +143,43 @@ export default function Home() {
         />
         <AllClearButton
           onClick={() => {
-            const result = onClickButton(
-              {
-                currentValue,
-                previousValue,
-                operator,
-                isNewInput,
-              },
-              'AC'
-            );
-            setCurrentValue(result.currentValue);
-            setPreviousValue(result.previousValue);
-            setOperator(result.operator);
-            setIsNewInput(result.isNewInput);
+            const newMemory = onClickButton(memory, 'AC');
+            setMemory(newMemory);
           }}
         />
         <EqualButton
           onClick={() => {
-            const result = onClickButton(
-              {
-                currentValue,
-                previousValue,
-                operator,
-                isNewInput,
-              },
-              '='
-            );
-            setCurrentValue(result.currentValue);
-            setPreviousValue(result.previousValue);
-            setOperator(result.operator);
-            setIsNewInput(result.isNewInput);
+            const newMemory = onClickButton(memory, '=');
+            setMemory(newMemory);
+            setIsFinished(true);
           }}
         />
         <OperatorButton
           value={Operator.ADD}
           onClick={(value) => {
-            const result = onClickButton(
-              {
-                currentValue,
-                previousValue,
-                operator,
-                isNewInput,
-              },
-              value
-            );
-            setCurrentValue(result.currentValue);
-            setPreviousValue(result.previousValue);
-            setOperator(result.operator);
-            setIsNewInput(result.isNewInput);
+            onClickOperator(value);
           }}
         />
       </div>
     </div>
   );
 
+  function onClickOperator(value: Operator) {
+    setIsFinished(false);
+    const newMemory = onClickButton(memory, value);
+    setMemory(newMemory);
+  }
+
   function onClickNumber(value: number) {
-    console.log(value);
-    const result = onClickButton(
-      {
-        currentValue,
-        previousValue,
-        operator,
-        isNewInput,
-      },
-      value.toString()
-    );
-    setCurrentValue(result.currentValue);
-    setPreviousValue(result.previousValue);
-    setOperator(result.operator);
-    setIsNewInput(result.isNewInput);
+    // 直前に=が押されていた場合。新しい計算を始める
+    if (isFinished) {
+      setIsFinished(false);
+      const newMemory = onClickButton(['0'], value.toString());
+      setMemory(newMemory);
+      return;
+    }
+    const newMemory = onClickButton(memory, value.toString());
+    setMemory(newMemory);
   }
 }
 
