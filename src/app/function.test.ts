@@ -3,354 +3,164 @@ import { onClickButton, Operator } from './function';
 
 describe('', () => {
   it('初期状態 → 1を押した', () => {
-    const initialState = {
-      currentValue: '0',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: true,
-    };
+    const initialState = ['0'];
     const resultState = onClickButton(initialState, '1');
-    expect(resultState).toEqual({
-      currentValue: '1',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: false,
-    });
+    expect(resultState).toEqual(['1']);
   });
 
   it('1を押した → 2を押した', () => {
-    const initialState = {
-      currentValue: '1',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: false,
-    };
+    const initialState = ['1'];
     const resultState = onClickButton(initialState, '2');
-    expect(resultState).toEqual({
-      currentValue: '12',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: false,
-    });
+    expect(resultState).toEqual(['12']);
+  });
+
+  it('1を押した → =を押した', () => {
+    const initialState = ['1'];
+    const resultState = onClickButton(initialState, '=');
+    expect(resultState).toEqual(['1']);
   });
 
   it('ACを押した', () => {
-    const initialState = {
-      currentValue: '12',
-      previousValue: '34',
-      operator: Operator.ADD,
-      isNewInput: false,
-    };
+    const initialState = ['12'];
     const resultState = onClickButton(initialState, 'AC');
-    expect(resultState).toEqual({
-      currentValue: '0',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['0']);
   });
 
   it('1を押した → +を押した', () => {
-    const initialState = {
-      currentValue: '1',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: false,
-    };
+    const initialState = ['1'];
     const resultState = onClickButton(initialState, Operator.ADD);
-    expect(resultState).toEqual({
-      currentValue: '1',
-      previousValue: '0',
-      operator: Operator.ADD,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['1', Operator.ADD]);
+  });
+
+  it('1を押した → +を押した → =を押した', () => {
+    const initialState = ['1', Operator.ADD];
+    const resultState = onClickButton(initialState, '=');
+    expect(resultState).toEqual(['1', Operator.ADD]);
   });
 
   it('1を押した → +を押した → 2を押した', () => {
-    const initialState = {
-      currentValue: '1',
-      previousValue: '0',
-      operator: Operator.ADD,
-      isNewInput: true,
-    };
+    const initialState = ['1', Operator.ADD];
     const resultState = onClickButton(initialState, '2');
-    expect(resultState).toEqual({
-      currentValue: '2',
-      previousValue: '1',
-      operator: Operator.ADD,
-      isNewInput: false,
-    });
-  });
-
-  it('1を押した → +を押した → 2を押した → 3を押した', () => {
-    const initialState = {
-      currentValue: '2',
-      previousValue: '1',
-      operator: Operator.ADD,
-      isNewInput: false,
-    };
-    const resultState = onClickButton(initialState, '3');
-    expect(resultState).toEqual({
-      currentValue: '23',
-      previousValue: '1',
-      operator: Operator.ADD,
-      isNewInput: false,
-    });
-  });
-
-  it('1を押した → +を押した → 0を押した', () => {
-    const initialState = {
-      currentValue: '1',
-      previousValue: '0',
-      operator: Operator.ADD,
-      isNewInput: true,
-    };
-    const resultState = onClickButton(initialState, '0');
-    expect(resultState).toEqual({
-      currentValue: '0',
-      previousValue: '1',
-      operator: Operator.ADD,
-      isNewInput: false,
-    });
-  });
-
-  it('1を押した → +を押した → 0を押した → 2を押した', () => {
-    const initialState = {
-      currentValue: '0',
-      previousValue: '1',
-      operator: Operator.ADD,
-      isNewInput: false,
-    };
-    const resultState = onClickButton(initialState, '2');
-    expect(resultState).toEqual({
-      currentValue: '2',
-      previousValue: '1',
-      operator: Operator.ADD,
-      isNewInput: false,
-    });
-  });
-
-  it('1を押した → +を押した → 2を押した → =を押した', () => {
-    const initialState = {
-      currentValue: '2',
-      previousValue: '1',
-      operator: Operator.ADD,
-      isNewInput: false,
-    };
-    const resultState = onClickButton(initialState, '=');
-    expect(resultState).toEqual({
-      currentValue: '3',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: true,
-    });
-  });
-
-  it('1を押した → +を押した → 2を押した → =を押した → =を押した', () => {
-    const initialState = {
-      currentValue: '3',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: true,
-    };
-    const resultState = onClickButton(initialState, '=');
-    expect(resultState).toEqual({
-      currentValue: '3',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: true,
-    });
-  });
-
-  it('1を押した → +を押した → 2を押した → +を押した', () => {
-    const initialState = {
-      currentValue: '2',
-      previousValue: '1',
-      operator: Operator.ADD,
-      isNewInput: false,
-    };
-    const resultState = onClickButton(initialState, Operator.ADD);
-    expect(resultState).toEqual({
-      currentValue: '3',
-      previousValue: '0',
-      operator: Operator.ADD,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['1', Operator.ADD, '2']);
   });
 
   it('1を押した → +を押した → +を押した', () => {
-    const initialState = {
-      currentValue: '1',
-      previousValue: '0',
-      operator: Operator.ADD,
-      isNewInput: true,
-    };
+    const initialState = ['1', Operator.ADD];
     const resultState = onClickButton(initialState, Operator.ADD);
-    expect(resultState).toEqual({
-      currentValue: '1',
-      previousValue: '0',
-      operator: Operator.ADD,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['1', Operator.ADD]);
+  });
+
+  it('1を押した → +を押した → 2を押した → 3を押した', () => {
+    const initialState = ['1', Operator.ADD, '2'];
+    const resultState = onClickButton(initialState, '3');
+    expect(resultState).toEqual(['1', Operator.ADD, '23']);
+  });
+
+  it('1を押した → +を押した → 0を押した', () => {
+    const initialState = ['1', Operator.ADD];
+    const resultState = onClickButton(initialState, '0');
+    expect(resultState).toEqual(['1', Operator.ADD, '0']);
+  });
+
+  it('1を押した → +を押した → 0を押した → 2を押した', () => {
+    const initialState = ['1', Operator.ADD, '0'];
+    const resultState = onClickButton(initialState, '2');
+    expect(resultState).toEqual(['1', Operator.ADD, '2']);
+  });
+
+  it('1を押した → +を押した → 2を押した → =を押した', () => {
+    const initialState = ['1', Operator.ADD, '2'];
+    const resultState = onClickButton(initialState, '=');
+    expect(resultState).toEqual(['3']);
+  });
+
+  it('1を押した → +を押した → 2を押した → =を押した → =を押した', () => {
+    const initialState = ['3'];
+    const resultState = onClickButton(initialState, '=');
+    expect(resultState).toEqual(['3']);
+  });
+
+  it('1を押した → +を押した → 2を押した → +を押した', () => {
+    const initialState = ['1', Operator.ADD, '2'];
+    const resultState = onClickButton(initialState, Operator.ADD);
+    expect(resultState).toEqual(['3', Operator.ADD]);
   });
 
   it('3を押した → -を押した', () => {
-    const initialState = {
-      currentValue: '3',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: false,
-    };
+    const initialState = ['3'];
     const resultState = onClickButton(initialState, Operator.SUBTRACT);
-    expect(resultState).toEqual({
-      currentValue: '3',
-      previousValue: '0',
-      operator: Operator.SUBTRACT,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['3', Operator.SUBTRACT]);
+  });
+
+  it('1を押した → -を押した → +を押した', () => {
+    const initialState = ['1', Operator.SUBTRACT];
+    const resultState = onClickButton(initialState, Operator.ADD);
+    expect(resultState).toEqual(['1', Operator.ADD]);
   });
 
   it('3を押した → -を押した → 2を押した', () => {
-    const initialState = {
-      currentValue: '3',
-      previousValue: '0',
-      operator: Operator.SUBTRACT,
-      isNewInput: true,
-    };
+    const initialState = ['3', Operator.SUBTRACT];
     const resultState = onClickButton(initialState, '2');
-    expect(resultState).toEqual({
-      currentValue: '2',
-      previousValue: '3',
-      operator: Operator.SUBTRACT,
-      isNewInput: false,
-    });
+    expect(resultState).toEqual(['3', Operator.SUBTRACT, '2']);
   });
 
   it('3を押した → -を押した → 2を押した → =を押した', () => {
-    const initialState = {
-      currentValue: '2',
-      previousValue: '3',
-      operator: Operator.SUBTRACT,
-      isNewInput: false,
-    };
+    const initialState = ['3', Operator.SUBTRACT, '2'];
     const resultState = onClickButton(initialState, '=');
-    expect(resultState).toEqual({
-      currentValue: '1',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['1']);
   });
 
   it('3を押した → -を押した → 4を押した → =を押した', () => {
-    const initialState = {
-      currentValue: '4',
-      previousValue: '3',
-      operator: Operator.SUBTRACT,
-      isNewInput: false,
-    };
+    const initialState = ['3', Operator.SUBTRACT, '4'];
     const resultState = onClickButton(initialState, '=');
-    expect(resultState).toEqual({
-      currentValue: '-1',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['-1']);
   });
 
   it('3を押した → -を押した → -を押した', () => {
-    const initialState = {
-      currentValue: '3',
-      previousValue: '0',
-      operator: Operator.SUBTRACT,
-      isNewInput: true,
-    };
+    const initialState = ['3', Operator.SUBTRACT];
     const resultState = onClickButton(initialState, Operator.SUBTRACT);
-    expect(resultState).toEqual({
-      currentValue: '3',
-      previousValue: '0',
-      operator: Operator.SUBTRACT,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['3', Operator.SUBTRACT]);
   });
 
   it('-1 → +を押した → 2を押した → =を押した', () => {
-    const initialState = {
-      currentValue: '-1',
-      previousValue: '2',
-      operator: Operator.ADD,
-      isNewInput: true,
-    };
+    const initialState = ['-1', Operator.ADD, '2'];
     const resultState = onClickButton(initialState, '=');
-    expect(resultState).toEqual({
-      currentValue: '1',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['1']);
   });
 
   it('2を押した → ×を押した', () => {
-    const initialState = {
-      currentValue: '2',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: false,
-    };
+    const initialState = ['2'];
     const resultState = onClickButton(initialState, Operator.MULTIPLY);
-    expect(resultState).toEqual({
-      currentValue: '2',
-      previousValue: '0',
-      operator: Operator.MULTIPLY,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['2', Operator.MULTIPLY]);
   });
 
   it('2を押した → ×を押した → 3を押した', () => {
-    const initialState = {
-      currentValue: '2',
-      previousValue: '0',
-      operator: Operator.MULTIPLY,
-      isNewInput: true,
-    };
+    const initialState = ['2', Operator.MULTIPLY];
     const resultState = onClickButton(initialState, '3');
-    expect(resultState).toEqual({
-      currentValue: '3',
-      previousValue: '2',
-      operator: Operator.MULTIPLY,
-      isNewInput: false,
-    });
+    expect(resultState).toEqual(['2', Operator.MULTIPLY, '3']);
   });
 
   it('2を押した → ×を押した → 3を押した → =を押した', () => {
-    const initialState = {
-      currentValue: '3',
-      previousValue: '2',
-      operator: Operator.MULTIPLY,
-      isNewInput: false,
-    };
+    const initialState = ['2', Operator.MULTIPLY, '3'];
     const resultState = onClickButton(initialState, '=');
-    expect(resultState).toEqual({
-      currentValue: '6',
-      previousValue: '0',
-      operator: Operator.NONE,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['6']);
   });
 
   it('2を押した → ×を押した → ×を押した', () => {
-    const initialState = {
-      currentValue: '2',
-      previousValue: '0',
-      operator: Operator.MULTIPLY,
-      isNewInput: true,
-    };
+    const initialState = ['2', Operator.MULTIPLY];
     const resultState = onClickButton(initialState, Operator.MULTIPLY);
-    expect(resultState).toEqual({
-      currentValue: '2',
-      previousValue: '0',
-      operator: Operator.MULTIPLY,
-      isNewInput: true,
-    });
+    expect(resultState).toEqual(['2', Operator.MULTIPLY]);
+  });
+
+  it('1を押した → ÷を押した → 0を押した → =を押した', () => {
+    const initialState = ['1', Operator.DIVIDE, '0'];
+    const resultState = onClickButton(initialState, '=');
+    expect(resultState).toEqual(['NaN']);
+  });
+
+  it('NaN → +を押した', () => {
+    const initialState = ['NaN'];
+    const resultState = onClickButton(initialState, Operator.ADD);
+    expect(resultState).toEqual(['NaN']);
   });
 });
