@@ -7,6 +7,7 @@ export default function Home() {
   const [previousValue, setPreviousValue] = useState<string>('0');
   const [currentValue, setCurrentValue] = useState<string>('0');
   const [operator, setOperator] = useState<Operator>(Operator.NONE);
+  const [isNewInput, setIsNewInput] = useState<boolean>(true);
 
   useEffect(() => {
     console.log(
@@ -15,7 +16,9 @@ export default function Home() {
       'operator:',
       operator,
       'current:',
-      currentValue
+      currentValue,
+      'isNewInput:',
+      isNewInput
     );
   }, []);
 
@@ -26,9 +29,11 @@ export default function Home() {
       'operator:',
       operator,
       'current:',
-      currentValue
+      currentValue,
+      'isNewInput:',
+      isNewInput
     );
-  }, [previousValue, currentValue, operator]);
+  }, [previousValue, currentValue, operator, isNewInput]);
 
   return (
     <div
@@ -142,7 +147,19 @@ export default function Home() {
         />
         <AllClearButton
           onClick={() => {
-            console.log('AC');
+            const result = onClickButton(
+              {
+                currentValue,
+                previousValue,
+                operator,
+                isNewInput,
+              },
+              'AC'
+            );
+            setCurrentValue(result.currentValue);
+            setPreviousValue(result.previousValue);
+            setOperator(result.operator);
+            setIsNewInput(result.isNewInput);
           }}
         />
         <EqualButton
@@ -153,7 +170,20 @@ export default function Home() {
         <OperatorButton
           value={Operator.ADD}
           onClick={(value) => {
-            console.log(value);
+            const result = onClickButton(
+              {
+                currentValue,
+                previousValue,
+                operator,
+                isNewInput,
+              },
+              value
+            );
+            console.log(result);
+            setCurrentValue(result.currentValue);
+            setPreviousValue(result.previousValue);
+            setOperator(result.operator);
+            setIsNewInput(result.isNewInput);
           }}
         />
       </div>
@@ -167,12 +197,14 @@ export default function Home() {
         currentValue,
         previousValue,
         operator,
+        isNewInput,
       },
       value.toString()
     );
     setCurrentValue(result.currentValue);
     setPreviousValue(result.previousValue);
     setOperator(result.operator);
+    setIsNewInput(result.isNewInput);
   }
 }
 
