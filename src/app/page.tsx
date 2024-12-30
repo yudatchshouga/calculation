@@ -1,95 +1,249 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+enum Operator {
+  ADD = "+",
+  SUBTRACT = "–",
+  MULTIPLY = "×",
+  DIVIDE = "÷",
+  EQUAL = "=",
+}
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div
+      style={{
+        padding: "20px",
+      }}
+    >
+      <div
+        style={{
+          width: "286px",
+          height: "60px",
+          backgroundColor: "#888888",
+          borderRadius: "8px",
+          marginBottom: "2px",
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          padding: "0 12px",
+          color: "#fff",
+          fontSize: "24px",
+        }}
+      >
+        0
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 70px)",
+          gridTemplateRows: "repeat(4, 70px)",
+          columnGap: "2px",
+          rowGap: "2px",
+        }}
+      >
+        <NumberButton
+          value={7}
+          onClick={(value) => {
+            onClickNumber(value);
+          }}
         />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+        <NumberButton
+          value={8}
+          onClick={(value) => {
+            onClickNumber(value);
+          }}
+        />
+        <NumberButton
+          value={9}
+          onClick={(value) => {
+            onClickNumber(value);
+          }}
+        />
+        <OperatorButton
+          value={Operator.DIVIDE}
+          onClick={(value) => {
+            console.log(value);
+          }}
+        />
+        <NumberButton
+          value={4}
+          onClick={(value) => {
+            onClickNumber(value);
+          }}
+        />
+        <NumberButton
+          value={5}
+          onClick={(value) => {
+            onClickNumber(value);
+          }}
+        />
+        <NumberButton
+          value={6}
+          onClick={(value) => {
+            onClickNumber(value);
+          }}
+        />
+        <OperatorButton
+          value={Operator.MULTIPLY}
+          onClick={(value) => {
+            console.log(value);
+          }}
+        />
+        <NumberButton
+          value={1}
+          onClick={(value) => {
+            onClickNumber(value);
+          }}
+        />
+        <NumberButton
+          value={2}
+          onClick={(value) => {
+            onClickNumber(value);
+          }}
+        />
+        <NumberButton
+          value={3}
+          onClick={(value) => {
+            onClickNumber(value);
+          }}
+        />
+        <OperatorButton
+          value={Operator.SUBTRACT}
+          onClick={(value) => {
+            console.log(value);
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          }}
+        />
+        <NumberButton
+          value={0}
+          onClick={(value) => {
+            onClickNumber(value);
+          }}
+        />
+        <AllClearButton
+          onClick={() => {
+            console.log("AC");
+          }}
+        />
+        <EqualButton
+          onClick={() => {
+            console.log(Operator.EQUAL);
+            
+          }}
+        />
+        <OperatorButton
+          value={Operator.ADD}
+          onClick={(value) => {
+            console.log(value);
+          }}
+        />
+      </div>
     </div>
   );
+
+  function onClickNumber(value: number) {
+    console.log(value);
+  }
 }
+
+type NumberButtonProps = {
+  value: number;
+  onClick: (value: number) => void;
+};
+
+const NumberButton = (props: NumberButtonProps) => {
+  const { value, onClick } = props;
+  return (
+    <button
+      style={{
+        width: "70px",
+        height: "70px",
+        borderRadius: "8px",
+        border: "1px solid #cbcbcb",
+        backgroundColor: "#dcdcdc",
+        color: "#000",
+        fontSize: "30px",
+      }}
+      onClick={() => {
+        onClick(value);
+      }}
+    >
+      {value}
+    </button>
+  );
+};
+
+type OperatorButtonProps = {
+  value: Operator;
+  onClick: (value: Operator) => void;
+};
+
+const OperatorButton = (props: OperatorButtonProps) => {
+  const { value, onClick } = props;
+  return (
+    <button
+      style={{
+        width: "70px",
+        height: "70px",
+        borderRadius: "8px",
+        border: "1px solid #ec891d",
+        backgroundColor: "#fe9a2d",
+        color: "#ffffff",
+        fontSize: "30px",
+      }}
+      onClick={() => {
+        onClick(value);
+      }}
+    >
+      {value}
+    </button>
+  );
+};
+
+type EqualButtonProps = {
+  onClick: () => void;
+};
+
+const EqualButton = (props: EqualButtonProps) => {
+  const { onClick } = props;
+  return (
+    <button
+      style={{
+        width: "70px",
+        height: "70px",
+        borderRadius: "8px",
+        border: "1px solid #ec891d",
+        color: "#fff",
+        backgroundColor: "#fe9a2d",
+        fontSize: "30px",
+      }}
+      onClick={onClick}
+    >
+      =
+    </button>
+  );
+};
+
+type AllClearButtonProps = {
+  onClick: () => void;
+};
+
+const AllClearButton = (props: AllClearButtonProps) => {
+  const { onClick } = props;
+  return (
+    <button
+      style={{
+        width: "70px",
+        height: "70px",
+        borderRadius: "8px",
+        border: "1px solid #ec891d",
+        backgroundColor: "#fe9a2d",
+        color: "#fff",
+        fontSize: "30px",
+      }}
+      onClick={onClick}
+    >
+      AC
+    </button>
+  );
+};
