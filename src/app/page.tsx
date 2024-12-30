@@ -1,7 +1,7 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
-import { onClickButton, Operator } from './function';
+import { useEffect, useState } from 'react';
+import { getNewMemory, Operator } from './function';
 
 export default function Home() {
   const [memory, setMemory] = useState<string[]>(['0']);
@@ -9,11 +9,6 @@ export default function Home() {
   const [isFinished, setIsFinished] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log('memory:', memory);
-  }, []);
-
-  useEffect(() => {
-    console.log('memory:', memory);
     const last = memory[memory.length - 1];
     if (
       last === Operator.ADD ||
@@ -30,6 +25,80 @@ export default function Home() {
   useEffect(() => {
     console.log('isFinished:', isFinished);
   }, [isFinished]);
+
+  function onClick(value: string) {
+    if (value === 'AC') {
+      // ACの場合
+      setIsFinished(false);
+      const newMemory = getNewMemory(memory, 'AC');
+      setMemory(newMemory);
+    } else if (value === '=') {
+      // =の場合
+      setIsFinished(true);
+      const newMemory = getNewMemory(memory, '=');
+      setMemory(newMemory);
+    } else if (
+      // 演算子の場合
+      value === Operator.ADD ||
+      value === Operator.SUBTRACT ||
+      value === Operator.MULTIPLY ||
+      value === Operator.DIVIDE
+    ) {
+      setIsFinished(false);
+      const newMemory = getNewMemory(memory, value);
+      setMemory(newMemory);
+    } else if (isFinished) {
+      // 直前に=が押されていた場合。新しい計算を始める
+      setIsFinished(false);
+      const newMemory = getNewMemory(['0'], value);
+      setMemory(newMemory);
+    } else {
+      setIsFinished(false);
+      const newMemory = getNewMemory(memory, value);
+      setMemory(newMemory);
+    }
+  }
+
+  type ButtonProps = {
+    value: string;
+  };
+
+  const Button = (props: ButtonProps) => {
+    const { value } = props;
+    const color =
+      value === 'AC' ||
+      value === '=' ||
+      value === Operator.ADD ||
+      value === Operator.SUBTRACT ||
+      value === Operator.MULTIPLY ||
+      value === Operator.DIVIDE
+        ? {
+            border: '1px solid #ec891d',
+            backgroundColor: '#fe9a2d',
+            color: '#ffffff',
+          }
+        : {
+            border: '1px solid #cbcbcb',
+            backgroundColor: '#dcdcdc',
+            color: '#000',
+          };
+    return (
+      <button
+        style={{
+          width: '70px',
+          height: '70px',
+          borderRadius: '8px',
+          fontSize: '30px',
+          ...color,
+        }}
+        onClick={() => {
+          onClick(value);
+        }}
+      >
+        {value}
+      </button>
+    );
+  };
 
   return (
     <div
@@ -63,224 +132,23 @@ export default function Home() {
           rowGap: '2px',
         }}
       >
-        <NumberButton
-          value={7}
-          onClick={(value) => {
-            onClickNumber(value);
-          }}
-        />
-        <NumberButton
-          value={8}
-          onClick={(value) => {
-            onClickNumber(value);
-          }}
-        />
-        <NumberButton
-          value={9}
-          onClick={(value) => {
-            onClickNumber(value);
-          }}
-        />
-        <OperatorButton
-          value={Operator.DIVIDE}
-          onClick={(value) => {
-            onClickOperator(value);
-          }}
-        />
-        <NumberButton
-          value={4}
-          onClick={(value) => {
-            onClickNumber(value);
-          }}
-        />
-        <NumberButton
-          value={5}
-          onClick={(value) => {
-            onClickNumber(value);
-          }}
-        />
-        <NumberButton
-          value={6}
-          onClick={(value) => {
-            onClickNumber(value);
-          }}
-        />
-        <OperatorButton
-          value={Operator.MULTIPLY}
-          onClick={(value) => {
-            onClickOperator(value);
-          }}
-        />
-        <NumberButton
-          value={1}
-          onClick={(value) => {
-            onClickNumber(value);
-          }}
-        />
-        <NumberButton
-          value={2}
-          onClick={(value) => {
-            onClickNumber(value);
-          }}
-        />
-        <NumberButton
-          value={3}
-          onClick={(value) => {
-            onClickNumber(value);
-          }}
-        />
-        <OperatorButton
-          value={Operator.SUBTRACT}
-          onClick={(value) => {
-            onClickOperator(value);
-          }}
-        />
-        <NumberButton
-          value={0}
-          onClick={(value) => {
-            onClickNumber(value);
-          }}
-        />
-        <AllClearButton
-          onClick={() => {
-            const newMemory = onClickButton(memory, 'AC');
-            setMemory(newMemory);
-          }}
-        />
-        <EqualButton
-          onClick={() => {
-            const newMemory = onClickButton(memory, '=');
-            setMemory(newMemory);
-            setIsFinished(true);
-          }}
-        />
-        <OperatorButton
-          value={Operator.ADD}
-          onClick={(value) => {
-            onClickOperator(value);
-          }}
-        />
+        <Button value="7" />
+        <Button value="8" />
+        <Button value="9" />
+        <Button value={Operator.DIVIDE} />
+        <Button value="4" />
+        <Button value="5" />
+        <Button value="6" />
+        <Button value={Operator.MULTIPLY} />
+        <Button value="1" />
+        <Button value="2" />
+        <Button value="3" />
+        <Button value={Operator.SUBTRACT} />
+        <Button value="0" />
+        <Button value="AC" />
+        <Button value="=" />
+        <Button value={Operator.ADD} />
       </div>
     </div>
   );
-
-  function onClickOperator(value: Operator) {
-    setIsFinished(false);
-    const newMemory = onClickButton(memory, value);
-    setMemory(newMemory);
-  }
-
-  function onClickNumber(value: number) {
-    // 直前に=が押されていた場合。新しい計算を始める
-    if (isFinished) {
-      setIsFinished(false);
-      const newMemory = onClickButton(['0'], value.toString());
-      setMemory(newMemory);
-      return;
-    }
-    const newMemory = onClickButton(memory, value.toString());
-    setMemory(newMemory);
-  }
 }
-
-type NumberButtonProps = {
-  value: number;
-  onClick: (value: number) => void;
-};
-
-const NumberButton = (props: NumberButtonProps) => {
-  const { value, onClick } = props;
-  return (
-    <button
-      style={{
-        width: '70px',
-        height: '70px',
-        borderRadius: '8px',
-        border: '1px solid #cbcbcb',
-        backgroundColor: '#dcdcdc',
-        color: '#000',
-        fontSize: '30px',
-      }}
-      onClick={() => {
-        onClick(value);
-      }}
-    >
-      {value}
-    </button>
-  );
-};
-
-type OperatorButtonProps = {
-  value: Operator;
-  onClick: (value: Operator) => void;
-};
-
-const OperatorButton = (props: OperatorButtonProps) => {
-  const { value, onClick } = props;
-  return (
-    <button
-      style={{
-        width: '70px',
-        height: '70px',
-        borderRadius: '8px',
-        border: '1px solid #ec891d',
-        backgroundColor: '#fe9a2d',
-        color: '#ffffff',
-        fontSize: '30px',
-      }}
-      onClick={() => {
-        onClick(value);
-      }}
-    >
-      {value}
-    </button>
-  );
-};
-
-type EqualButtonProps = {
-  onClick: () => void;
-};
-
-const EqualButton = (props: EqualButtonProps) => {
-  const { onClick } = props;
-  return (
-    <button
-      style={{
-        width: '70px',
-        height: '70px',
-        borderRadius: '8px',
-        border: '1px solid #ec891d',
-        color: '#fff',
-        backgroundColor: '#fe9a2d',
-        fontSize: '30px',
-      }}
-      onClick={onClick}
-    >
-      =
-    </button>
-  );
-};
-
-type AllClearButtonProps = {
-  onClick: () => void;
-};
-
-const AllClearButton = (props: AllClearButtonProps) => {
-  const { onClick } = props;
-  return (
-    <button
-      style={{
-        width: '70px',
-        height: '70px',
-        borderRadius: '8px',
-        border: '1px solid #ec891d',
-        backgroundColor: '#fe9a2d',
-        color: '#fff',
-        fontSize: '30px',
-      }}
-      onClick={onClick}
-    >
-      AC
-    </button>
-  );
-};

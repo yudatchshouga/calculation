@@ -6,14 +6,7 @@ export enum Operator {
   NONE = '',
 }
 
-export type CalculatorState = {
-  currentValue: string;
-  previousValue: string;
-  operator: Operator;
-  isNewInput: boolean;
-};
-
-export function onClickButton(memory: string[], input: string): string[] {
+export function getNewMemory(memory: string[], input: string): string[] {
   // ACが入力された場合の処理
   if (input === 'AC') {
     return ['0'];
