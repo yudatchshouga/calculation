@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getNewMemory, Operator } from './function';
+import { getNewMemory, isNotNumber, isOperator, Operator } from './function';
 
 export default function Home() {
   const [memory, setMemory] = useState<string[]>(['0']);
@@ -10,12 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     const last = memory[memory.length - 1];
-    if (
-      last === Operator.ADD ||
-      last === Operator.SUBTRACT ||
-      last === Operator.MULTIPLY ||
-      last === Operator.DIVIDE
-    ) {
+    if (isOperator(last)) {
       setDisplayValue(memory[memory.length - 2]);
     } else {
       setDisplayValue(last);
@@ -37,13 +32,8 @@ export default function Home() {
       setIsFinished(true);
       const newMemory = getNewMemory(memory, '=');
       setMemory(newMemory);
-    } else if (
+    } else if (isOperator(value)) {
       // 演算子の場合
-      value === Operator.ADD ||
-      value === Operator.SUBTRACT ||
-      value === Operator.MULTIPLY ||
-      value === Operator.DIVIDE
-    ) {
       setIsFinished(false);
       const newMemory = getNewMemory(memory, value);
       setMemory(newMemory);
@@ -65,23 +55,17 @@ export default function Home() {
 
   const Button = (props: ButtonProps) => {
     const { value } = props;
-    const color =
-      value === 'AC' ||
-      value === '=' ||
-      value === Operator.ADD ||
-      value === Operator.SUBTRACT ||
-      value === Operator.MULTIPLY ||
-      value === Operator.DIVIDE
-        ? {
-            border: '1px solid #ec891d',
-            backgroundColor: '#fe9a2d',
-            color: '#ffffff',
-          }
-        : {
-            border: '1px solid #cbcbcb',
-            backgroundColor: '#dcdcdc',
-            color: '#000',
-          };
+    const color = isNotNumber(value)
+      ? {
+          border: '1px solid #ec891d',
+          backgroundColor: '#fe9a2d',
+          color: '#ffffff',
+        }
+      : {
+          border: '1px solid #cbcbcb',
+          backgroundColor: '#dcdcdc',
+          color: '#000',
+        };
     return (
       <button
         style={{

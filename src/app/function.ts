@@ -30,12 +30,7 @@ export function getNewMemory(memory: string[], input: string): string[] {
   const last: string = memory[memory.length - 1];
 
   // 演算子が入力された場合の処理
-  if (
-    input === Operator.ADD ||
-    input === Operator.SUBTRACT ||
-    input === Operator.MULTIPLY ||
-    input === Operator.DIVIDE
-  ) {
+  if (isOperator(input)) {
     // 既に計算がある場合は計算してから演算子を追加
     if (memory.length === 3) {
       return [calculate(memory), input];
@@ -50,12 +45,7 @@ export function getNewMemory(memory: string[], input: string): string[] {
 
   // 数字が入力された場合の処理
   // 最後の入力が演算子なら新しい数字を追加
-  if (
-    last === Operator.ADD ||
-    last === Operator.SUBTRACT ||
-    last === Operator.MULTIPLY ||
-    last === Operator.DIVIDE
-  ) {
+  if (isOperator(last)) {
     return [...memory, input];
   }
   // 最後の入力が0なら上書き
@@ -85,4 +75,17 @@ const calculate = (memory: string[]): string => {
     return String(Number(memory[0]) / Number(memory[2]));
   }
   throw new Error('Invalid operator');
+};
+
+export const isOperator = (value: string): boolean => {
+  return (
+    value === Operator.ADD ||
+    value === Operator.SUBTRACT ||
+    value === Operator.MULTIPLY ||
+    value === Operator.DIVIDE
+  );
+};
+
+export const isNotNumber = (value: string): boolean => {
+  return value === 'AC' || value === '=' || isOperator(value);
 };
