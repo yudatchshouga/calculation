@@ -1,44 +1,44 @@
-"use client";
+'use client';
 
 enum Operator {
-  ADD = "+",
-  SUBTRACT = "–",
-  MULTIPLY = "×",
-  DIVIDE = "÷",
-  EQUAL = "=",
+  ADD = '+',
+  SUBTRACT = '–',
+  MULTIPLY = '×',
+  DIVIDE = '÷',
+  EQUAL = '=',
 }
 
 export default function Home() {
   return (
     <div
       style={{
-        padding: "20px",
+        padding: '20px',
       }}
     >
       <div
         style={{
-          width: "286px",
-          height: "60px",
-          backgroundColor: "#888888",
-          borderRadius: "8px",
-          marginBottom: "2px",
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          padding: "0 12px",
-          color: "#fff",
-          fontSize: "24px",
+          width: '286px',
+          height: '60px',
+          backgroundColor: '#888888',
+          borderRadius: '8px',
+          marginBottom: '2px',
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          padding: '0 12px',
+          color: '#fff',
+          fontSize: '24px',
         }}
       >
         0
       </div>
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 70px)",
-          gridTemplateRows: "repeat(4, 70px)",
-          columnGap: "2px",
-          rowGap: "2px",
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 70px)',
+          gridTemplateRows: 'repeat(4, 70px)',
+          columnGap: '2px',
+          rowGap: '2px',
         }}
       >
         <NumberButton
@@ -111,7 +111,6 @@ export default function Home() {
           value={Operator.SUBTRACT}
           onClick={(value) => {
             console.log(value);
-
           }}
         />
         <NumberButton
@@ -122,13 +121,12 @@ export default function Home() {
         />
         <AllClearButton
           onClick={() => {
-            console.log("AC");
+            console.log('AC');
           }}
         />
         <EqualButton
           onClick={() => {
             console.log(Operator.EQUAL);
-            
           }}
         />
         <OperatorButton
@@ -156,13 +154,13 @@ const NumberButton = (props: NumberButtonProps) => {
   return (
     <button
       style={{
-        width: "70px",
-        height: "70px",
-        borderRadius: "8px",
-        border: "1px solid #cbcbcb",
-        backgroundColor: "#dcdcdc",
-        color: "#000",
-        fontSize: "30px",
+        width: '70px',
+        height: '70px',
+        borderRadius: '8px',
+        border: '1px solid #cbcbcb',
+        backgroundColor: '#dcdcdc',
+        color: '#000',
+        fontSize: '30px',
       }}
       onClick={() => {
         onClick(value);
@@ -183,13 +181,13 @@ const OperatorButton = (props: OperatorButtonProps) => {
   return (
     <button
       style={{
-        width: "70px",
-        height: "70px",
-        borderRadius: "8px",
-        border: "1px solid #ec891d",
-        backgroundColor: "#fe9a2d",
-        color: "#ffffff",
-        fontSize: "30px",
+        width: '70px',
+        height: '70px',
+        borderRadius: '8px',
+        border: '1px solid #ec891d',
+        backgroundColor: '#fe9a2d',
+        color: '#ffffff',
+        fontSize: '30px',
       }}
       onClick={() => {
         onClick(value);
@@ -209,13 +207,13 @@ const EqualButton = (props: EqualButtonProps) => {
   return (
     <button
       style={{
-        width: "70px",
-        height: "70px",
-        borderRadius: "8px",
-        border: "1px solid #ec891d",
-        color: "#fff",
-        backgroundColor: "#fe9a2d",
-        fontSize: "30px",
+        width: '70px',
+        height: '70px',
+        borderRadius: '8px',
+        border: '1px solid #ec891d',
+        color: '#fff',
+        backgroundColor: '#fe9a2d',
+        fontSize: '30px',
       }}
       onClick={onClick}
     >
@@ -233,13 +231,13 @@ const AllClearButton = (props: AllClearButtonProps) => {
   return (
     <button
       style={{
-        width: "70px",
-        height: "70px",
-        borderRadius: "8px",
-        border: "1px solid #ec891d",
-        backgroundColor: "#fe9a2d",
-        color: "#fff",
-        fontSize: "30px",
+        width: '70px',
+        height: '70px',
+        borderRadius: '8px',
+        border: '1px solid #ec891d',
+        backgroundColor: '#fe9a2d',
+        color: '#fff',
+        fontSize: '30px',
       }}
       onClick={onClick}
     >
