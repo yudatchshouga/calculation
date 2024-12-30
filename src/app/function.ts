@@ -3,7 +3,6 @@ export enum Operator {
   SUBTRACT = '–',
   MULTIPLY = '×',
   DIVIDE = '÷',
-  EQUAL = '=',
   NONE = '',
 }
 
@@ -21,7 +20,6 @@ export function onClickButton(
   const { currentValue, previousValue, operator, isNewInput } = state;
 
   if (input === 'AC') {
-    console.log('AC');
     return {
       currentValue: '0',
       previousValue: '0',
@@ -30,8 +28,61 @@ export function onClickButton(
     };
   }
 
+  if (input === '=') {
+    if (operator === Operator.NONE) {
+      return state;
+    }
+    if (operator === Operator.ADD) {
+      return {
+        currentValue: String(Number(previousValue) + Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.NONE,
+        isNewInput: true,
+      };
+    }
+    if (operator === Operator.SUBTRACT) {
+      return {
+        currentValue: String(Number(previousValue) - Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.NONE,
+        isNewInput: true,
+      };
+    }
+    if (operator === Operator.MULTIPLY) {
+      return {
+        currentValue: String(Number(previousValue) * Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.NONE,
+        isNewInput: true,
+      };
+    }
+  }
+
   if (input === Operator.ADD) {
-    console.log(Operator.ADD);
+    if (operator === Operator.ADD) {
+      return {
+        currentValue: String(Number(previousValue) + Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.ADD,
+        isNewInput: true,
+      };
+    }
+    if (operator === Operator.SUBTRACT) {
+      return {
+        currentValue: String(Number(previousValue) - Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.ADD,
+        isNewInput: true,
+      };
+    }
+    if (operator === Operator.MULTIPLY) {
+      return {
+        currentValue: String(Number(previousValue) * Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.ADD,
+        isNewInput: true,
+      };
+    }
     return {
       currentValue,
       previousValue,
@@ -40,8 +91,90 @@ export function onClickButton(
     };
   }
 
+  if (input === Operator.SUBTRACT) {
+    if (operator === Operator.ADD) {
+      return {
+        currentValue: String(Number(previousValue) + Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.SUBTRACT,
+        isNewInput: true,
+      };
+    }
+    if (operator === Operator.SUBTRACT && isNewInput) {
+      return {
+        currentValue: String(Number(previousValue) - Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.SUBTRACT,
+        isNewInput: true,
+      };
+    }
+    if (operator === Operator.SUBTRACT) {
+      return {
+        currentValue: String(Number(previousValue) - Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.SUBTRACT,
+        isNewInput: true,
+      };
+    }
+    if (operator === Operator.MULTIPLY) {
+      return {
+        currentValue: String(Number(previousValue) * Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.SUBTRACT,
+        isNewInput: true,
+      };
+    }
+    return {
+      currentValue,
+      previousValue,
+      operator: Operator.SUBTRACT,
+      isNewInput: true,
+    };
+  }
+
+  if (input === Operator.MULTIPLY) {
+    if (operator === Operator.ADD) {
+      return {
+        currentValue: String(Number(previousValue) + Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.MULTIPLY,
+        isNewInput: true,
+      };
+    }
+    if (operator === Operator.SUBTRACT) {
+      return {
+        currentValue: String(Number(previousValue) - Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.MULTIPLY,
+        isNewInput: true,
+      };
+    }
+    if (operator === Operator.MULTIPLY) {
+      return {
+        currentValue: String(Number(previousValue) * Number(currentValue)),
+        previousValue: '0',
+        operator: Operator.MULTIPLY,
+        isNewInput: true,
+      };
+    }
+    return {
+      currentValue,
+      previousValue,
+      operator: Operator.MULTIPLY,
+      isNewInput: true,
+    };
+  }
+
+  if (isNewInput) {
+    return {
+      currentValue: input,
+      previousValue: currentValue,
+      operator,
+      isNewInput: false,
+    };
+  }
+
   if (currentValue === '0') {
-    console.log('currentValue === 0');
     return {
       currentValue: input,
       previousValue,
@@ -50,7 +183,7 @@ export function onClickButton(
     };
   }
 
-  console.log('default');
+  // 12 + 3 → 123
   return {
     currentValue: currentValue + input,
     previousValue,

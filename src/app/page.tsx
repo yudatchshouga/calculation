@@ -112,7 +112,19 @@ export default function Home() {
         <OperatorButton
           value={Operator.MULTIPLY}
           onClick={(value) => {
-            console.log(value);
+            const result = onClickButton(
+              {
+                currentValue,
+                previousValue,
+                operator,
+                isNewInput,
+              },
+              value
+            );
+            setCurrentValue(result.currentValue);
+            setPreviousValue(result.previousValue);
+            setOperator(result.operator);
+            setIsNewInput(result.isNewInput);
           }}
         />
         <NumberButton
@@ -136,7 +148,19 @@ export default function Home() {
         <OperatorButton
           value={Operator.SUBTRACT}
           onClick={(value) => {
-            console.log(value);
+            const result = onClickButton(
+              {
+                currentValue,
+                previousValue,
+                operator,
+                isNewInput,
+              },
+              value
+            );
+            setCurrentValue(result.currentValue);
+            setPreviousValue(result.previousValue);
+            setOperator(result.operator);
+            setIsNewInput(result.isNewInput);
           }}
         />
         <NumberButton
@@ -164,7 +188,19 @@ export default function Home() {
         />
         <EqualButton
           onClick={() => {
-            console.log(Operator.EQUAL);
+            const result = onClickButton(
+              {
+                currentValue,
+                previousValue,
+                operator,
+                isNewInput,
+              },
+              '='
+            );
+            setCurrentValue(result.currentValue);
+            setPreviousValue(result.previousValue);
+            setOperator(result.operator);
+            setIsNewInput(result.isNewInput);
           }}
         />
         <OperatorButton
@@ -179,7 +215,6 @@ export default function Home() {
               },
               value
             );
-            console.log(result);
             setCurrentValue(result.currentValue);
             setPreviousValue(result.previousValue);
             setOperator(result.operator);
