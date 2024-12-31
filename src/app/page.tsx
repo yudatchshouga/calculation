@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getNewMemory, isNotNumber, isOperator, Operator } from './function';
+import { getNewMemory, isOperator, Operator } from './function';
+import { Button } from './Button';
 
 export default function Home() {
   const [memory, setMemory] = useState<string[]>(['0']);
@@ -51,39 +52,26 @@ export default function Home() {
     }
   }
 
-  type ButtonProps = {
-    value: string;
+  const buttonContainer = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 70px)',
+    gridTemplateRows: 'repeat(4, 70px)',
+    columnGap: '2px',
+    rowGap: '2px',
   };
 
-  const Button = (props: ButtonProps) => {
-    const { value } = props;
-    const color = isNotNumber(value)
-      ? {
-          border: '1px solid #ec891d',
-          backgroundColor: '#fe9a2d',
-          color: '#ffffff',
-        }
-      : {
-          border: '1px solid #cbcbcb',
-          backgroundColor: '#dcdcdc',
-          color: '#000',
-        };
-    return (
-      <button
-        style={{
-          width: '70px',
-          height: '70px',
-          borderRadius: '8px',
-          fontSize: '30px',
-          ...color,
-        }}
-        onClick={() => {
-          onClick(value);
-        }}
-      >
-        {value}
-      </button>
-    );
+  const displayStyle = {
+    width: '286px',
+    height: '60px',
+    backgroundColor: '#888888',
+    borderRadius: '8px',
+    marginBottom: '2px',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: '0 12px',
+    color: '#fff',
+    fontSize: '24px',
   };
 
   return (
@@ -92,48 +80,24 @@ export default function Home() {
         padding: '20px',
       }}
     >
-      <div
-        style={{
-          width: '286px',
-          height: '60px',
-          backgroundColor: '#888888',
-          borderRadius: '8px',
-          marginBottom: '2px',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          padding: '0 12px',
-          color: '#fff',
-          fontSize: '24px',
-        }}
-      >
-        {displayValue}
-      </div>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 70px)',
-          gridTemplateRows: 'repeat(4, 70px)',
-          columnGap: '2px',
-          rowGap: '2px',
-        }}
-      >
-        <Button value="7" />
-        <Button value="8" />
-        <Button value="9" />
-        <Button value={Operator.DIVIDE} />
-        <Button value="4" />
-        <Button value="5" />
-        <Button value="6" />
-        <Button value={Operator.MULTIPLY} />
-        <Button value="1" />
-        <Button value="2" />
-        <Button value="3" />
-        <Button value={Operator.SUBTRACT} />
-        <Button value="0" />
-        <Button value="AC" />
-        <Button value="=" />
-        <Button value={Operator.ADD} />
+      <div style={displayStyle}>{displayValue}</div>
+      <div style={buttonContainer}>
+        <Button value="7" onClick={onClick} />
+        <Button value="8" onClick={onClick} />
+        <Button value="9" onClick={onClick} />
+        <Button value={Operator.DIVIDE} onClick={onClick} />
+        <Button value="4" onClick={onClick} />
+        <Button value="5" onClick={onClick} />
+        <Button value="6" onClick={onClick} />
+        <Button value={Operator.MULTIPLY} onClick={onClick} />
+        <Button value="1" onClick={onClick} />
+        <Button value="2" onClick={onClick} />
+        <Button value="3" onClick={onClick} />
+        <Button value={Operator.SUBTRACT} onClick={onClick} />
+        <Button value="0" onClick={onClick} />
+        <Button value="AC" onClick={onClick} />
+        <Button value="=" onClick={onClick} />
+        <Button value={Operator.ADD} onClick={onClick} />
       </div>
     </div>
   );
