@@ -1,23 +1,39 @@
 'use client';
 import { isNotNumber } from './function';
 
-type ButtonProps = {
-  value: string;
-  onClick: (value: string) => void;
+const numberButtonColor = {
+  border: '1px solid #cbcbcb',
+  backgroundColor: '#dcdcdc',
+  color: '#000',
 };
-export const Button = (props: ButtonProps) => {
-  const { value, onClick } = props;
-  const color = isNotNumber(value)
+
+const notNumButtonColor = (isActive: boolean) => {
+  return isActive
     ? {
+        border: '1px solid #ec891d',
+        backgroundColor: '#ffffff',
+        color: '#fe9a2d',
+      }
+    : {
         border: '1px solid #ec891d',
         backgroundColor: '#fe9a2d',
         color: '#ffffff',
-      }
-    : {
-        border: '1px solid #cbcbcb',
-        backgroundColor: '#dcdcdc',
-        color: '#000',
       };
+};
+
+type ButtonProps = {
+  value: string;
+  onClick: (value: string) => void;
+  isActive?: boolean;
+};
+
+export const Button = (props: ButtonProps) => {
+  const { value, onClick, isActive = false } = props;
+
+  const color = isNotNumber(value)
+    ? notNumButtonColor(isActive)
+    : numberButtonColor;
+
   return (
     <button
       style={{

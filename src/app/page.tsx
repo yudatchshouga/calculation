@@ -85,19 +85,35 @@ export default function Home() {
         <Button value="7" onClick={onClick} />
         <Button value="8" onClick={onClick} />
         <Button value="9" onClick={onClick} />
-        <Button value={Operator.DIVIDE} onClick={onClick} />
+        <Button
+          value={Operator.DIVIDE}
+          onClick={onClick}
+          isActive={memory[1] === Operator.DIVIDE}
+        />
         <Button value="4" onClick={onClick} />
         <Button value="5" onClick={onClick} />
         <Button value="6" onClick={onClick} />
-        <Button value={Operator.MULTIPLY} onClick={onClick} />
+        <Button
+          value={Operator.MULTIPLY}
+          onClick={onClick}
+          isActive={memory[1] === Operator.MULTIPLY}
+        />
         <Button value="1" onClick={onClick} />
         <Button value="2" onClick={onClick} />
         <Button value="3" onClick={onClick} />
-        <Button value={Operator.SUBTRACT} onClick={onClick} />
+        <Button
+          value={Operator.SUBTRACT}
+          onClick={onClick}
+          isActive={memory[1] === Operator.SUBTRACT}
+        />
         <Button value="0" onClick={onClick} />
         <Button value="AC" onClick={onClick} />
-        <Button value="=" onClick={onClick} />
-        <Button value={Operator.ADD} onClick={onClick} />
+        <Button value="=" onClick={onClick} isActive={isFinished} />
+        <Button
+          value={Operator.ADD}
+          onClick={onClick}
+          isActive={memory[1] === Operator.ADD}
+        />
       </div>
     </div>
   );
