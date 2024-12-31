@@ -9,6 +9,8 @@ export default function Home() {
   const [isFinished, setIsFinished] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log('memory:', memory);
+
     const last = memory[memory.length - 1];
     if (isOperator(last)) {
       setDisplayValue(memory[memory.length - 2]);
